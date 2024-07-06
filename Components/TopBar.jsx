@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const TopBar = () => {
   return (
-    <Navbar expand="lg" style={{ backgroundColor: "#2D4B43", color: "white" }}>
+    <Navbar expand="lg" style={{ backgroundColor: "#113098", color: "white" }}>
       <Container fluid>
         <Link to="/" className="nav-link">
           <svg
