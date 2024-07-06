@@ -12,7 +12,6 @@ const Home = (props) => {
     { città: "Tokyo", Lat: "35.6828387", Lon: "139.7594549" },
   ];
   const navigate = useNavigate();
-  const tempKtoC = (kelvin) => Math.floor(kelvin - 273.15);
 
   const fetchCityHome = (latitudine, longitudine) => {
     fetch(
@@ -38,9 +37,7 @@ const Home = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   console.log("siamo su Home:", objcitycard);
-  const getWeatherIconUrl = (iconID) => {
-    return `http://openweathermap.org/img/w/${iconID}.png`;
-  };
+
   return (
     <Container>
       <Row className="mt-5">
@@ -48,7 +45,14 @@ const Home = (props) => {
           <h1>Weather Application</h1>
         </Col>
       </Row>
-      <Form onSubmit={props.handleFormSubmit} inline className="mb-5">
+      <Form
+        onSubmit={(event) => {
+          event.preventDefault();
+          navigate(`/details/${searchForm}`);
+        }}
+        inline
+        className="mb-5"
+      >
         <Row className="justify-content-center">
           <Col sm={6}>
             <Form.Control
@@ -58,7 +62,7 @@ const Home = (props) => {
               value={searchForm}
               onChange={(evento) => {
                 setSearchForm(evento.target.value);
-                props.setCity(evento.target.value); // Setta la città nel componente genitore ovvero su APP
+                // Setta la città nel componente genitore ovvero su APP
               }}
             />
           </Col>
@@ -80,14 +84,14 @@ const Home = (props) => {
                   <div className="d-flex align-items-center">
                     <img
                       alt="Weather icon"
-                      src={getWeatherIconUrl(city.weather[0].icon)}
+                      src={props.getWeatherIconUrl(city.weather[0].icon)}
                       style={{ width: "70px", objectFit: "contain" }}
                     />
-                    <h1>{tempKtoC(city.main.temp) + "°"}</h1>
+                    <h1>{props.tempKtoC(city.main.temp) + "°"}</h1>
                   </div>
                   <div>
-                    <h6>Max: {tempKtoC(city.main.temp_max) + "°"}</h6>
-                    <h6>Min: {tempKtoC(city.main.temp_min) + "°"}</h6>
+                    <h6>Max: {props.tempKtoC(city.main.temp_max) + "°"}</h6>
+                    <h6>Min: {props.tempKtoC(city.main.temp_min) + "°"}</h6>
                     <h6>hum: {city.main.humidity} g/m³</h6>
                     <h6>wind: {city.wind.speed} m/s</h6>
                   </div>
