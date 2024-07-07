@@ -1,7 +1,9 @@
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const Home = (props) => {
   const [searchForm, setSearchForm] = useState([]);
   const [objcitycard, setObjCityCard] = useState([]);
@@ -11,6 +13,44 @@ const Home = (props) => {
     { città: "Canberra", Lat: "-35.2975906", Lon: "149.1012676" },
     { città: "Tokyo", Lat: "35.6828387", Lon: "139.7594549" },
   ];
+  ///////////////////////////////////////////////
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 2,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+          speed: 500,
+          infinite: true,
+        },
+      },
+
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          speed: 500,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          speed: 500,
+          infinite: true,
+        },
+      },
+    ],
+  };
   const navigate = useNavigate();
 
   const fetchCityHome = (latitudine, longitudine) => {
@@ -69,43 +109,45 @@ const Home = (props) => {
         </Row>
       </Form>
       <Row className="">
-        {objcitycard.length > 0 &&
-          objcitycard.map((city) => (
-            <Col className="m-4" key={`key-${city.id}`}>
-              <Card
-                style={{
-                  width: "18rem",
-                  backgroundColor: "#215DB5",
-                  color: "white",
-                }}
-              >
-                <Card.Title className="m-1">{city.name}</Card.Title>
-                <div className="d-flex justify-content-around">
-                  <div className="d-flex align-items-center">
-                    <img
-                      alt="Weather icon"
-                      src={props.getWeatherIconUrl(city.weather[0].icon)}
-                      style={{ width: "70px", objectFit: "contain" }}
-                    />
-                    <h1>{props.tempKtoC(city.main.temp) + "°"}</h1>
+        <Slider {...settings} className="px-5">
+          {objcitycard.length > 0 &&
+            objcitycard.map((city) => (
+              <Col className="m-4" key={`key-${city.id}`}>
+                <Card
+                  style={{
+                    width: "18rem",
+                    backgroundColor: "#215DB5",
+                    color: "white",
+                  }}
+                >
+                  <Card.Title className="m-1">{city.name}</Card.Title>
+                  <div className="d-flex justify-content-around">
+                    <div className="d-flex align-items-center">
+                      <img
+                        alt="Weather icon"
+                        src={props.getWeatherIconUrl(city.weather[0].icon)}
+                        style={{ width: "70px", objectFit: "contain" }}
+                      />
+                      <h1>{props.tempKtoC(city.main.temp) + "°"}</h1>
+                    </div>
+                    <div>
+                      <h6>Max: {props.tempKtoC(city.main.temp_max) + "°"}</h6>
+                      <h6>Min: {props.tempKtoC(city.main.temp_min) + "°"}</h6>
+                      <h6>hum: {city.main.humidity} g/m³</h6>
+                      <h6>wind: {city.wind.speed} m/s</h6>
+                    </div>
                   </div>
-                  <div>
-                    <h6>Max: {props.tempKtoC(city.main.temp_max) + "°"}</h6>
-                    <h6>Min: {props.tempKtoC(city.main.temp_min) + "°"}</h6>
-                    <h6>hum: {city.main.humidity} g/m³</h6>
-                    <h6>wind: {city.wind.speed} m/s</h6>
-                  </div>
-                </div>
 
-                <Card.Body>
-                  <Card.Text>{city.weather[0].description}</Card.Text>
-                  <Button style={{ backgroundColor: "#5281C9" }} onClick={() => navigate(`/details/${city.name}`)}>
-                    View for more info
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+                  <Card.Body>
+                    <Card.Text>{city.weather[0].description}</Card.Text>
+                    <Button style={{ backgroundColor: "#5281C9" }} onClick={() => navigate(`/details/${city.name}`)}>
+                      View for more info
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+        </Slider>
       </Row>
     </Container>
   );

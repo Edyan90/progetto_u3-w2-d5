@@ -128,7 +128,7 @@ const Details = (props) => {
       <Container>
         <div className="d-flex">
           <img alt="Weather icon" src={props.getWeatherIconUrl(icon)} style={{ width: "80px", objectFit: "contain" }} />
-          <h1 style={{ fontSize: "80px" }}>{weather.name}</h1>
+          <h1 style={{ fontSize: "80px" }}>{id}</h1>
           {weather.main && (
             <h1 style={{ fontSize: "80px", marginLeft: "auto" }}>{props.tempKtoC(weather.main.temp)} °C</h1>
           )}
