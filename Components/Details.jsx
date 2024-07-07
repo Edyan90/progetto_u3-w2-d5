@@ -60,7 +60,9 @@ const Details = (props) => {
         <div className="d-flex">
           <img alt="Weather icon" src={props.getWeatherIconUrl(icon)} style={{ width: "80px", objectFit: "contain" }} />
           <h1 style={{ fontSize: "80px" }}>{weather.name}</h1>
-          <h1 style={{ fontSize: "80px", marginLeft: "auto" }}>{props.tempKtoC(weather.main.temp)}°</h1>
+          {weather.main && (
+            <h1 style={{ fontSize: "80px", marginLeft: "auto" }}>{props.tempKtoC(weather.main.temp)} °C</h1>
+          )}
         </div>
         <Row className="m-3 d-flex">
           <Col>
@@ -69,16 +71,24 @@ const Details = (props) => {
         </Row>
         <Row>
           <h1 className="mb-5">Now:</h1>
-          <Col>
-            {<h3>Temp: {props.tempKtoC(weather.main.temp)}</h3>}
-            <h3>Temp Max: {props.tempKtoC(weather.main.temp_max)}</h3>
-            <h3>Temp Min: {props.tempKtoC(weather.main.temp_min)}</h3>
-            <h3>Humidity: {weather.main.humidity}g/m³</h3>
-            <h3>Pressure: {weather.main.pressure}</h3>
-            <h3>Sunrise: {timeConverter(weather.sys.sunrise)}</h3>
-            <h3>Sunset: {timeConverter(weather.sys.sunset)}</h3>
-            <h3>Wind: {weather.sys.wind.speed}m/s</h3>
-          </Col>
+          {weather.main && (
+            <>
+              <Col>
+                <h3>Temp: {props.tempKtoC(weather.main.temp)} °C</h3>
+                <h3>Temp Max: {props.tempKtoC(weather.main.temp_max)} °C</h3>
+                <h3>Temp Min: {props.tempKtoC(weather.main.temp_min)} °C</h3>
+              </Col>
+              <Col>
+                <h3>Humidity: {weather.main.humidity} g/m³</h3>
+                <h3>Pressure: {weather.main.pressure} KPascal</h3>
+                <h3>Wind: {weather.wind.speed} m/s</h3>
+              </Col>
+              <Col>
+                <h3>Sunset: {timeConverter(weather.sys.sunset)}</h3>
+                <h3>Sunrise: {timeConverter(weather.sys.sunrise)}</h3>
+              </Col>
+            </>
+          )}
         </Row>
       </Container>
     );
